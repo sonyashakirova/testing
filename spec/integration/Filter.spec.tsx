@@ -4,9 +4,11 @@ import { JestStoreProvider } from "../utils/JestStoreProvider";
 import ue from "@testing-library/user-event";
 import * as taskSliceModule from "src/store/taskSlice";
 
-const userEvent = ue.setup();
+const userEvent = ue.setup({
+    advanceTimers: jest.advanceTimersByTime,
+});
 
-const items = [
+const items: Task[] = [
     {
         id: "1",
         header: "купить молоко",
@@ -35,7 +37,9 @@ describe("Список задач", () => {
 
         render(<TaskList />, { wrapper: JestStoreProvider });
 
-        const filterBtn = screen.getByRole("button", { name: "фильтровать" });
+        const filterBtn = screen.getByRole("button", {
+            name: /отфильтровать задачи/i,
+        });
 
         await userEvent.click(filterBtn);
 
@@ -51,7 +55,9 @@ describe("Список задач", () => {
 
         render(<TaskList />, { wrapper: JestStoreProvider });
 
-        const filterBtn = screen.getByRole("button", { name: "фильтровать" });
+        const filterBtn = screen.getByRole("button", {
+            name: /отфильтровать задачи/i,
+        });
 
         await userEvent.dblClick(filterBtn);
 
