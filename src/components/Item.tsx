@@ -6,6 +6,14 @@ type Props = Task & {
 };
 
 export const Item = (props: Props) => {
+  let header = props.header;
+
+  if (props.header.length > 32) {
+    header = header.slice(0, 31) + "…";
+  }
+
+  if (!header) return null;
+
   return (
     <li className="item-wrapper">
       <input
@@ -14,9 +22,7 @@ export const Item = (props: Props) => {
         defaultChecked={props.done}
         onChange={() => props.onToggle(props.id)}
       />
-      <label htmlFor={props.id}>
-        {props.done ? <s>{props.header}</s> : props.header}
-      </label>
+      <label htmlFor={props.id}>{props.done ? <s>{header}</s> : header}</label>
       <DeleteButton
         disabled={!props.done}
         onClick={() => props.onDelete(props.id)}
