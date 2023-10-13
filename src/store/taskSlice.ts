@@ -32,12 +32,17 @@ export const taskListSlice = createSlice({
     },
     toggleTask: (state, action: PayloadAction<Task["id"]>) => {
       const task = state.list.find((x) => x.id === action.payload);
+      const uncompleted = state.list.filter((x) => !x.done).length;
 
       if (task) {
-        task.done = !task.done;
+        if (task.done && uncompleted === 10) {
+          state.notification = `Завершите другие задачи, чтобы выполнить это действие`;
+        } else {
+          task.done = !task.done;
 
-        if (task.done) {
-          state.notification = `Задача "${task.header}" завершена`;
+          if (task.done) {
+            state.notification = `Задача "${task.header}" завершена`;
+          }
         }
       }
     },
@@ -74,4 +79,4 @@ export const uncompleteCount = (state: RootState) =>
   state.taskList.list.filter((x) => !x.done).length;
 
 export const getNotification = (state: RootState) =>
-  state.taskList.notification
+  state.taskList.notification;

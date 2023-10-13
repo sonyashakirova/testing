@@ -19,7 +19,7 @@ export const Item = (props: Props) => {
       <input
         type="checkbox"
         id={props.id}
-        defaultChecked={props.done}
+        checked={props.done}
         onChange={() => props.onToggle(props.id)}
       />
       <label htmlFor={props.id}>{props.done ? <s>{header}</s> : header}</label>
