@@ -6,14 +6,23 @@ type Props = {
   onToggle: (id: Task["id"]) => void;
 };
 
-export const List = ({ items, onDelete, onToggle }: Props) => (
-  <ul className="task-list tasks">
-    {items.map((item) => (
-      <Item
-        {...item}
-        key={item.id}
-        onDelete={onDelete}
-        onToggle={onToggle} />
-    ))}
-  </ul>
-);
+export const List = ({ items, onDelete, onToggle }: Props) => {
+  let limitedItems = items;
+  const uncompleted = items.filter((item) => !item.done);
+
+  if (uncompleted.length > 10) {
+    const extra = uncompleted
+      .slice(10, uncompleted.length)
+      .map((item) => item.id);
+
+    limitedItems = limitedItems.filter((item) => !extra.includes(item.id));
+  }
+
+  return (
+    <ul className="task-list tasks">
+      {limitedItems.map((item) => (
+        <Item {...item} key={item.id} onDelete={onDelete} onToggle={onToggle} />
+      ))}
+    </ul>
+  );
+};
