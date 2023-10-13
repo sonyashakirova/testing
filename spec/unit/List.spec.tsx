@@ -27,7 +27,7 @@ it("отображение списка задач", () => {
     <List items={items} onDelete={onDelete} onToggle={onToggle} />
   );
   const firstRender = asFragment();
-  
+
   items.pop();
 
   rerender(<List items={items} onDelete={onDelete} onToggle={onToggle} />);
@@ -37,5 +37,23 @@ it("отображение списка задач", () => {
 });
 
 it("Список содержит не больше 10 невыполненных задач", () => {
+  const items: Task[] = [];
 
+  // генерирует 12 невыполненных задач
+  for (let i = 0; i < 12; i++) {
+    items.push({
+      id: i.toString(),
+      header: "пример задачи",
+      done: false,
+    });
+  }
+
+  const onDelete = jest.fn();
+  const onToggle = jest.fn();
+
+  render(<List items={items} onDelete={onDelete} onToggle={onToggle} />);
+
+  const listItems = screen.getAllByRole("listitem");
+
+  expect(listItems).toHaveLength(10);
 });
